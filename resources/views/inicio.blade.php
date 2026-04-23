@@ -202,6 +202,67 @@
         </aside>
     </main>
 
+<section class="w-full max-w-[1700px] mx-auto px-4 md:px-6 mb-8 animate__animated animate__fadeInUp">
+        <div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-xl border border-slate-100">
+            <div class="flex items-center justify-between mb-8 border-b-2 border-rose-50 pb-4">
+                <h2 class="text-2xl font-black uppercase tracking-tight text-slate-800 flex items-center gap-3">
+                    <span class="w-2 h-8 bg-clubRojo rounded-full"></span>
+                    Últimas Noticias
+                </h2>
+                <a href="#" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-clubRojo transition-colors flex items-center gap-1">Ver todas <span class="text-lg leading-none mb-0.5">&rsaquo;</span></a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                
+                <article class="group cursor-pointer flex flex-col bg-slate-50 rounded-[2rem] border border-slate-100 overflow-hidden hover:bg-white hover:shadow-2xl transition-all hover:-translate-y-2 duration-300">
+                    <div class="relative h-48 md:h-56 overflow-hidden bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1518605368461-1ee12523b1bc?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 left-4 bg-clubRojo text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-md">Crónica</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2">23 Abril 2026</span>
+                        <h3 class="text-xl font-black text-slate-800 leading-tight mb-3 group-hover:text-clubRojo transition-colors">Victoria agónica en el descuento ante nuestra afición</h3>
+                        <p class="text-slate-500 text-sm font-medium line-clamp-2 mb-4">El equipo logró sumar los tres puntos en el minuto 93 gracias a un testarazo inapelable a la salida de un córner.</p>
+                        <div class="mt-auto">
+                            <span class="text-clubRojo font-black text-xs uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-2 transition-transform">Leer más <span class="text-lg leading-none">&rsaquo;</span></span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="group cursor-pointer flex flex-col bg-slate-50 rounded-[2rem] border border-slate-100 overflow-hidden hover:bg-white hover:shadow-2xl transition-all hover:-translate-y-2 duration-300">
+                    <div class="relative h-48 md:h-56 overflow-hidden bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 left-4 bg-clubNegro text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-md">Club</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2">20 Abril 2026</span>
+                        <h3 class="text-xl font-black text-slate-800 leading-tight mb-3 group-hover:text-clubRojo transition-colors">Arranca la campaña de abonados para la recta final</h3>
+                        <p class="text-slate-500 text-sm font-medium line-clamp-2 mb-4">El club lanza una promoción especial para que el Cerro Muriano sea un fortín en los últimos partidos de liga.</p>
+                        <div class="mt-auto">
+                            <span class="text-clubRojo font-black text-xs uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-2 transition-transform">Leer más <span class="text-lg leading-none">&rsaquo;</span></span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="group cursor-pointer flex flex-col bg-slate-50 rounded-[2rem] border border-slate-100 overflow-hidden hover:bg-white hover:shadow-2xl transition-all hover:-translate-y-2 duration-300">
+                    <div class="relative h-48 md:h-56 overflow-hidden bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 left-4 bg-clubRojo text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-md">Equipación</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-2">15 Abril 2026</span>
+                        <h3 class="text-xl font-black text-slate-800 leading-tight mb-3 group-hover:text-clubRojo transition-colors">Ya disponible la nueva camiseta en nuestra sede</h3>
+                        <p class="text-slate-500 text-sm font-medium line-clamp-2 mb-4">Pásate por la sede oficial y hazte con la piel del CD Murianense para lucirla con orgullo este fin de semana.</p>
+                        <div class="mt-auto">
+                            <span class="text-clubRojo font-black text-xs uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-2 transition-transform">Leer más <span class="text-lg leading-none">&rsaquo;</span></span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
     <section class="w-full max-w-[1700px] mx-auto px-4 md:px-6 mb-8 animate__animated animate__fadeInUp">
         <div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-xl border border-slate-100">
             <div class="flex items-center mb-8 border-b-2 border-rose-50 pb-4">
