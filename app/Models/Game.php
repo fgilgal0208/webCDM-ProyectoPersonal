@@ -3,17 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Game extends Model
 {
-    public function localTeam(): BelongsTo
+    // Quitamos los bloqueos de seguridad para el Seeder
+    protected $guarded = [];
+
+    // Relación con el equipo local
+    public function localTeam()
     {
         return $this->belongsTo(Team::class, 'local_team_id');
     }
 
     // Relación con el equipo visitante
-    public function visitorTeam(): BelongsTo
+    public function visitorTeam()
     {
         return $this->belongsTo(Team::class, 'visitor_team_id');
     }
