@@ -236,12 +236,12 @@ class DatabaseSeeder extends Seeder
                 // Guardar partido en base de datos
 
                 Game::create([
-                    'jornada' => $jornada,
+                    'jornada' => $jornada, // Antes ponía 'numero_jornada'
                     'local_team_id' => $idLocal,
                     'visitor_team_id' => $idVisitante,
                     'goles_local' => $gl,
                     'goles_visitante' => $gv,
-                    'fecha_partido' => now()->subDays(100 - $jornada)->format('Y-m-d') 
+                    'fecha_partido' => now()->subDays(100 - $jornada)->format('Y-m-d') // Antes ponía 'fecha_hora'
                 ]);
 
                 // Matemáticas Equipo Local
