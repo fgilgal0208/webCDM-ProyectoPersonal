@@ -39,7 +39,6 @@
 <body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col overflow-x-hidden">
 
     <header class="relative bg-clubRojoDeep text-white pt-10 pb-10 px-6 border-b-8 border-clubNegro shadow-xl z-30 animate__animated animate__fadeInDown">
-        
         <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
             <div class="absolute inset-0 bg-gradient-to-r from-clubNegro/40 via-transparent to-clubNegro/40"></div>
             <div class="absolute inset-y-0 left-0 w-1/3 opacity-15" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px; mask-image: linear-gradient(to right, black, transparent);"></div>
@@ -48,11 +47,9 @@
         
         <div class="max-w-[1700px] mx-auto flex justify-center relative z-10">
             <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-                
                 <div class="relative -mb-24 md:-mb-32 bg-white p-4 md:p-5 rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 border-4 border-slate-50 transform hover:scale-105 transition-transform duration-300">
                     <img src="{{ asset('storage/escudos/murianense.jpg') }}" alt="Escudo" class="w-28 h-28 md:w-40 md:h-40 object-contain">
                 </div>
-
                 <div class="text-center md:text-left">
                     <h1 class="text-5xl md:text-[5.5rem] leading-none font-black italic tracking-tighter uppercase drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)]">
                         CD <span class="text-white">MURIANENSE</span>
@@ -99,11 +96,11 @@
                         <tr>
                             <th class="px-2 py-4 font-bold">Pos</th>
                             <th class="px-4 py-4 text-left">Equipo</th>
-                            <th class="px-2 py-4">Pts</th>
+                            <th class="px-2 py-4 text-slate-900">Pts</th>
                             <th class="px-2 py-4">PJ</th>
-                            <th class="px-2 py-4">V</th>
-                            <th class="px-2 py-4">E</th>
-                            <th class="px-2 py-4">D</th>
+                            <th class="px-2 py-4 text-emerald-600">V</th>
+                            <th class="px-2 py-4 text-amber-500">E</th>
+                            <th class="px-2 py-4 text-rose-500">D</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-50">
@@ -115,7 +112,11 @@
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 font-bold uppercase tracking-tighter text-slate-700 group-hover:text-clubRojo">
-                                    {{ $teamStat->team->nombre }}
+                                    <div class="flex items-center gap-3">
+                                        <img src="{{ asset('storage/' . $teamStat->team->escudo_path) }}" 
+                                             alt="Escudo" class="w-6 h-6 md:w-8 md:h-8 object-contain border-0 bg-transparent">
+                                        <span>{{ $teamStat->team->nombre }}</span>
+                                    </div>
                                 </td>
                                 <td class="px-2 py-3 text-center font-black text-xl text-slate-900">{{ $teamStat->puntos }}</td>
                                 <td class="px-2 py-3 text-center font-bold text-slate-400">{{ $teamStat->jugados }}</td>
@@ -150,14 +151,16 @@
                     @forelse($games as $game)
                         <div class="group bg-slate-50 px-4 py-2 rounded-3xl border border-slate-100 flex-1 flex flex-col justify-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1">
                             <div class="flex justify-between items-center w-full">
-                                <div class="w-2/5 flex flex-col items-center">
-                                    <span class="text-[9px] font-black uppercase text-slate-400 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->localTeam->nombre }}</span>
+                                <div class="w-2/5 flex flex-col items-center gap-1">
+                                    <img src="{{ asset('storage/' . $game->localTeam->escudo_path) }}" class="w-6 h-6 object-contain bg-transparent">
+                                    <span class="text-[8px] font-black uppercase text-slate-400 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->localTeam->nombre }}</span>
                                 </div>
                                 <div class="w-1/5 text-center">
                                     <div class="text-xl font-black italic text-slate-800">{{ $game->goles_local }}-{{ $game->goles_visitante }}</div>
                                 </div>
-                                <div class="w-2/5 flex flex-col items-center">
-                                    <span class="text-[9px] font-black uppercase text-slate-400 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->visitorTeam->nombre }}</span>
+                                <div class="w-2/5 flex flex-col items-center gap-1">
+                                    <img src="{{ asset('storage/' . $game->visitorTeam->escudo_path) }}" class="w-6 h-6 object-contain bg-transparent">
+                                    <span class="text-[8px] font-black uppercase text-slate-400 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->visitorTeam->nombre }}</span>
                                 </div>
                             </div>
                         </div>
@@ -176,7 +179,6 @@
                     <span class="w-2 h-8 bg-clubRojo rounded-full"></span>
                     Últimas Noticias
                 </h2>
-                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Actualizado</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -186,7 +188,7 @@
                             @if($noticia->imagen_path)
                                 <img src="{{ asset('storage/' . $noticia->imagen_path) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                             @else
-                                <div class="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-black">MURIANENSE</div>
+                                <div class="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-black tracking-widest uppercase">CD MURIANENSE</div>
                             @endif
                             <div class="absolute top-4 left-4 bg-clubRojo text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-md">{{ $noticia->categoria }}</div>
                         </div>
@@ -200,9 +202,7 @@
                         </div>
                     </article>
                 @empty
-                    <div class="col-span-full py-16 text-center">
-                        <p class="text-slate-400 font-black italic uppercase tracking-widest">No hay noticias publicadas todavía</p>
-                    </div>
+                    <div class="col-span-full py-16 text-center text-slate-400 font-black italic uppercase tracking-widest">No hay noticias publicadas todavía</div>
                 @endforelse
             </div>
         </div>
@@ -210,49 +210,51 @@
 
     <section class="w-full max-w-[1700px] mx-auto px-4 md:px-6 mb-8 animate__animated animate__fadeInUp">
         <div class="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-xl border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="flex flex-col items-center text-center p-8 bg-slate-50 rounded-[2rem]">
-                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">📍</div>
-                <h3 class="font-black uppercase text-slate-800 mb-2">Sede</h3>
-                <p class="text-slate-500 font-bold text-sm">C. Vista Alegre, 1<br>Cerro Muriano, Córdoba</p>
+            <div class="flex flex-col items-center text-center p-8 bg-slate-50 rounded-[2rem] hover:bg-rose-50 transition-colors duration-300">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-2xl">📍</div>
+                <h3 class="font-black uppercase text-slate-800 mb-2 tracking-tight">Sede Oficial</h3>
+                <p class="text-slate-500 font-bold text-sm leading-relaxed uppercase">C. Vista Alegre, 1<br>Cerro Muriano, Córdoba</p>
             </div>
-            <div class="flex flex-col items-center text-center p-8 bg-slate-50 rounded-[2rem]">
-                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">📞</div>
-                <h3 class="font-black uppercase text-slate-800 mb-2">Contacto</h3>
-                <p class="text-slate-500 font-bold text-sm">687 811 486<br>698 484 597</p>
+            <div class="flex flex-col items-center text-center p-8 bg-slate-50 rounded-[2rem] hover:bg-rose-50 transition-colors duration-300">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-2xl">📞</div>
+                <h3 class="font-black uppercase text-slate-800 mb-2 tracking-tight">Contacto</h3>
+                <p class="text-slate-500 font-bold text-sm leading-relaxed">687 811 486<br>698 484 597</p>
             </div>
-            <div class="flex flex-col items-center text-center p-8 bg-slate-50 rounded-[2rem]">
-                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">📱</div>
-                <h3 class="font-black uppercase text-slate-800 mb-2">Social</h3>
+            <div class="flex flex-col items-center text-center p-8 bg-slate-50 rounded-[2rem] hover:bg-rose-50 transition-colors duration-300">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-2xl">📱</div>
+                <h3 class="font-black uppercase text-slate-800 mb-2 tracking-tight">Síguenos</h3>
                 <div class="flex gap-4">
-                    <a href="https://www.instagram.com/cdmurianense/" class="text-rose-500 font-black text-xs hover:scale-110 transition-transform">IG</a>
-                    <a href="https://www.facebook.com/p/CD-Murianense-61577181990235/" class="text-blue-600 font-black text-xs hover:scale-110 transition-transform">FB</a>
+                    <a href="https://www.instagram.com/cdmurianense/" target="_blank" class="text-clubRojo font-black text-xs hover:scale-110 transition-transform uppercase tracking-widest border-b-2 border-clubRojo">Instagram</a>
+                    <a href="https://www.facebook.com/p/CD-Murianense-61577181990235/" target="_blank" class="text-blue-600 font-black text-xs hover:scale-110 transition-transform uppercase tracking-widest border-b-2 border-blue-600">Facebook</a>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="w-full bg-white py-16 border-t border-slate-100">
-        <div class="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-12 px-8">
-            <img src="{{ asset('storage/patrocinadores/bar_x.jpg') }}" class="h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all">
-            <img src="{{ asset('storage/patrocinadores/smn.jpg') }}" class="h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all">
-            <img src="{{ asset('storage/patrocinadores/ayuntamiento.png') }}" class="h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Caja_Rural_logo.svg/1200px-Caja_Rural_logo.svg.png" class="h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all">
+        <div class="max-w-[1700px] mx-auto px-8">
+            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20">
+                <img src="{{ asset('storage/patrocinadores/bar_x.jpg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="Bar X">
+                <img src="{{ asset('storage/patrocinadores/smn.jpg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="SMN">
+                <img src="{{ asset('storage/patrocinadores/ayuntamiento.png') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="Ayuntamiento">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Caja_Rural_logo.svg/1200px-Caja_Rural_logo.svg.png" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="Caja Rural">
+            </div>
         </div>
     </section>
 
-    <footer class="bg-clubRojoDeep text-white py-6 px-6 border-t-4 border-clubNegro mt-auto shadow-inner">
-        <div class="max-w-[1700px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+    <footer class="bg-clubRojoDeep text-white py-10 px-6 border-t-8 border-clubNegro mt-auto shadow-inner">
+        <div class="max-w-[1700px] mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
             <div class="flex flex-col items-center md:items-start">
-                <span class="text-xl font-black italic tracking-tighter uppercase">CD MURIANENSE</span>
-                <span class="text-[8px] font-bold tracking-[0.3em] uppercase text-rose-300/60">Orgullo de nuestra tierra</span>
+                <span class="text-2xl font-black italic tracking-tighter uppercase block">CD MURIANENSE</span>
+                <span class="text-[9px] font-bold tracking-[0.3em] uppercase text-rose-300/60">Orgullo de nuestra tierra</span>
             </div>
             <p class="text-[10px] font-bold uppercase tracking-widest text-white/80">&copy; {{ date('Y') }} • Cerro Muriano, Córdoba</p>
             <div class="flex flex-col items-center md:items-end gap-1">
-                <span class="text-base font-black italic text-white/90 uppercase">#VamosMurianense</span>
-                <div class="flex gap-2 text-[8px] font-bold text-rose-300/50 uppercase">
-                    <a href="#" class="hover:text-white">Aviso Legal</a>
+                <span class="text-xl font-black italic text-white uppercase mb-2 tracking-tighter">#VamosMurianense</span>
+                <div class="flex gap-4 text-[9px] font-bold text-rose-300/50 uppercase tracking-widest">
+                    <a href="#" class="hover:text-white transition-colors">Aviso Legal</a>
                     <span>•</span>
-                    <a href="#" class="hover:text-white">Privacidad</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacidad</a>
                 </div>
             </div>
         </div>
