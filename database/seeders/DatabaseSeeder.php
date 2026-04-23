@@ -234,13 +234,14 @@ class DatabaseSeeder extends Seeder
                 $idVisitante = $equiposMap[$visitante];
 
                 // Guardar partido en base de datos
+
                 Game::create([
-                    'numero_jornada' => $jornada,
+                    'jornada' => $jornada,
                     'local_team_id' => $idLocal,
                     'visitor_team_id' => $idVisitante,
                     'goles_local' => $gl,
                     'goles_visitante' => $gv,
-                    'fecha_hora' => now()->subDays(100 - $jornada) // Fecha falsa para que no dé error
+                    'fecha_partido' => now()->subDays(100 - $jornada)->format('Y-m-d') 
                 ]);
 
                 // Matemáticas Equipo Local

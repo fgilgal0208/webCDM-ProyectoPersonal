@@ -9,16 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+public function up(): void
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('local_team_id')->constrained('teams');
-            $table->foreignId('visitor_team_id')->constrained('teams');
+            $table->integer('jornada'); // <-- Así lo busca el HomeController
+            $table->foreignId('local_team_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('visitor_team_id')->constrained('teams')->onDelete('cascade');
             $table->integer('goles_local')->nullable();
             $table->integer('goles_visitante')->nullable();
-            $table->dateTime('fecha_hora');
-            $table->string('numero_jornada')->nullable();
+            $table->date('fecha_partido')->nullable(); // <-- Así lo busca el HomeController
             $table->timestamps();
         });
     }
