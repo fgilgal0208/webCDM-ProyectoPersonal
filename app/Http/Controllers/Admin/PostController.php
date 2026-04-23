@@ -85,7 +85,7 @@ class PostController extends Controller
             'extracto' => 'required|string',
             'cuerpo' => 'required|string',
             'fecha_publicacion' => 'required|date',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $data = $request->all();

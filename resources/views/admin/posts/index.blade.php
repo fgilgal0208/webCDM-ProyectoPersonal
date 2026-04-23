@@ -47,8 +47,7 @@
                             </td>
                             <td class="p-4 font-bold text-slate-800">{{ $post->titulo }}</td>
                             <td class="p-4 flex justify-end gap-2">
-                                <button class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition-colors">Editar</button>
-                                
+                                <a href="{{ route('posts.edit', $post) }}" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition-colors inline-block text-center">Editar</a>
                                 <form action="{{ route('posts.destroy', $post) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar esta noticia?');">
                                     @csrf
                                     @method('DELETE')

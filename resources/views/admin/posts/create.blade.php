@@ -11,6 +11,16 @@
         
         <div class="flex justify-between items-center mb-8 pb-6 border-b border-slate-100">
             <h1 class="text-2xl font-black uppercase text-slate-800 tracking-tight">Escribir Nueva Noticia</h1>
+            @if ($errors->any())
+            <div class="bg-rose-50 text-rose-600 p-4 rounded-xl mb-6 text-sm font-bold border border-rose-200">
+                <p class="uppercase text-[10px] tracking-widest mb-1">Se han encontrado errores:</p>
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
             <a href="{{ route('posts.index') }}" class="text-slate-400 hover:text-rose-600 font-bold uppercase text-xs tracking-widest transition-colors">Cancelar</a>
         </div>
 
