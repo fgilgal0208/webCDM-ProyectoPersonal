@@ -62,7 +62,40 @@
 
     <div class="h-24 md:h-32"></div>
 
-    <section class="w-full max-w-[1700px] mx-auto px-4 mt-4 animate__animated animate__fadeIn">
+    @if(isset($proximoPartido) && $proximoPartido)
+    <section class="max-w-[1700px] mx-auto px-4 mt-6 animate__animated animate__fadeInUp">
+        <div class="bg-gradient-to-r from-clubNegro to-clubRojoDeep p-1 rounded-[2rem] shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <div class="bg-white rounded-[1.9rem] p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4 w-full md:w-auto justify-center md:justify-start">
+                    <span class="bg-clubRojo text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md">Siguiente Encuentro</span>
+                    <span class="text-slate-500 font-bold text-sm italic">{{ \Carbon\Carbon::parse($proximoPartido->fecha_partido)->format('d/m/Y') }}</span>
+                </div>
+                
+                <div class="flex items-center justify-center gap-6 w-full md:w-auto my-2 md:my-0">
+                    <div class="flex flex-col md:flex-row items-center gap-2 md:gap-3 w-[120px] md:w-auto">
+                        <span class="font-black uppercase text-xs md:text-base text-slate-800 text-center md:text-right hidden md:block">{{ $proximoPartido->localTeam->nombre }}</span>
+                        <img src="{{ asset('storage/' . $proximoPartido->localTeam->escudo_path) }}" class="w-10 h-10 md:w-12 md:h-12 object-contain bg-transparent transform hover:scale-110 transition-transform">
+                        <span class="font-black uppercase text-[9px] text-slate-800 text-center md:hidden leading-tight truncate w-full">{{ $proximoPartido->localTeam->nombre }}</span>
+                    </div>
+                    
+                    <span class="font-black text-2xl text-slate-300">VS</span>
+                    
+                    <div class="flex flex-col-reverse md:flex-row items-center gap-2 md:gap-3 w-[120px] md:w-auto">
+                        <span class="font-black uppercase text-[9px] text-slate-800 text-center md:hidden leading-tight truncate w-full">{{ $proximoPartido->visitorTeam->nombre }}</span>
+                        <img src="{{ asset('storage/' . $proximoPartido->visitorTeam->escudo_path) }}" class="w-10 h-10 md:w-12 md:h-12 object-contain bg-transparent transform hover:scale-110 transition-transform">
+                        <span class="font-black uppercase text-xs md:text-base text-slate-800 text-center md:text-left hidden md:block">{{ $proximoPartido->visitorTeam->nombre }}</span>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex w-full md:w-auto justify-end">
+                    <span class="text-clubRojo font-black italic uppercase tracking-widest text-sm">#VamosMurianense</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <section class="w-full max-w-[1700px] mx-auto px-4 mt-6 animate__animated animate__fadeIn">
         <div class="relative w-full h-[180px] md:h-[320px] rounded-[2.5rem] overflow-hidden shadow-2xl group border-4 border-white bg-slate-200">
             <div id="slider" class="flex w-full h-full">
                 <div class="w-full h-full flex-shrink-0 relative">
@@ -81,7 +114,7 @@
         </div>
     </section>
 
-    <main class="w-full max-w-[1700px] mx-auto flex-grow p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="w-full max-w-[1700px] mx-auto flex-grow p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 mt-2">
         
         <section class="lg:col-span-8 bg-white p-5 md:p-8 rounded-[2.5rem] shadow-xl border border-slate-100 animate__animated animate__fadeInLeft">
             <div class="flex items-center mb-6 border-b-2 border-rose-50 pb-4">
@@ -147,25 +180,31 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-3 flex-grow overflow-hidden">
+                <div class="flex flex-col gap-4 flex-grow overflow-hidden">
                     @forelse($games as $game)
-                        <div class="group bg-slate-50 px-4 py-2 rounded-3xl border border-slate-100 flex-1 flex flex-col justify-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1">
+                        <div class="group bg-slate-50 px-4 py-4 rounded-3xl border border-slate-100 flex-1 flex flex-col justify-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1">
                             <div class="flex justify-between items-center w-full">
-                                <div class="w-2/5 flex flex-col items-center gap-1">
-                                    <img src="{{ asset('storage/' . $game->localTeam->escudo_path) }}" class="w-6 h-6 object-contain">
-                                    <span class="text-[8px] font-black uppercase text-slate-400 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->localTeam->nombre }}</span>
+                                <div class="w-2/5 flex flex-col items-center gap-2">
+                                    <img src="{{ asset('storage/' . $game->localTeam->escudo_path) }}" class="w-10 h-10 md:w-14 md:h-14 object-contain drop-shadow-md transform group-hover:scale-110 transition-transform">
+                                    <span class="text-[9px] md:text-[11px] font-black uppercase text-slate-500 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->localTeam->nombre }}</span>
                                 </div>
+                                
                                 <div class="w-1/5 text-center">
-                                    <div class="text-xl font-black italic text-slate-800">{{ $game->goles_local }}-{{ $game->goles_visitante }}</div>
+                                    @if($game->goles_local !== null)
+                                        <div class="text-2xl md:text-3xl font-black italic text-slate-800 tracking-tighter">{{ $game->goles_local }}-{{ $game->goles_visitante }}</div>
+                                    @else
+                                        <div class="text-lg font-black italic text-slate-300">vs</div>
+                                    @endif
                                 </div>
-                                <div class="w-2/5 flex flex-col items-center gap-1">
-                                    <img src="{{ asset('storage/' . $game->visitorTeam->escudo_path) }}" class="w-6 h-6 object-contain">
-                                    <span class="text-[8px] font-black uppercase text-slate-400 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->visitorTeam->nombre }}</span>
+                                
+                                <div class="w-2/5 flex flex-col items-center gap-2">
+                                    <img src="{{ asset('storage/' . $game->visitorTeam->escudo_path) }}" class="w-10 h-10 md:w-14 md:h-14 object-contain drop-shadow-md transform group-hover:scale-110 transition-transform">
+                                    <span class="text-[9px] md:text-[11px] font-black uppercase text-slate-500 text-center group-hover:text-clubRojo leading-tight truncate w-full">{{ $game->visitorTeam->nombre }}</span>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="text-center h-full flex items-center justify-center text-slate-300 font-black italic">No hay partidos</div>
+                        <div class="text-center h-full flex items-center justify-center text-slate-300 font-black italic uppercase tracking-widest">No hay partidos</div>
                     @endforelse
                 </div>
             </section>
@@ -197,7 +236,7 @@
                             <h3 class="text-xl font-black text-slate-800 leading-tight mb-3 group-hover:text-clubRojo transition-colors">{{ $noticia->titulo }}</h3>
                             <p class="text-slate-500 text-sm font-medium line-clamp-2 mb-4">{{ $noticia->extracto }}</p>
                             <div class="mt-auto">
-                                <span class="text-clubRojo font-black text-xs uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-2 transition-transform">Leer más &rsaquo;</span>
+                                <a href="{{ route('noticias.show', $noticia) }}" class="text-clubRojo font-black text-xs uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-2 transition-transform">Leer más &rsaquo;</a>
                             </div>
                         </div>
                     </article>
@@ -228,15 +267,15 @@
                 <h3 class="font-black uppercase text-slate-800 mb-2 tracking-tight">Síguenos</h3>
                 <div class="flex gap-6 mt-2">
                     <a href="https://www.instagram.com/cdmurianense/" target="_blank" class="transform hover:scale-110 transition-transform" title="Instagram">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="#E1306C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16Z" stroke="#E1306C" stroke-width="2"/>
                             <path d="M17.5 6.51L17.51 6.49889" stroke="#E1306C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </a>
                     <a href="https://www.facebook.com/p/CD-Murianense-61577181990235/" target="_blank" class="transform hover:scale-110 transition-transform" title="Facebook">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="#1877F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#1877F2"/>
+                        <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" fill="#1877F2"/>
                         </svg>
                     </a>
                 </div>
@@ -247,10 +286,10 @@
     <section class="w-full bg-white py-16 border-t border-slate-100">
         <div class="max-w-[1700px] mx-auto px-8">
             <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20">
-                <img src="{{ asset('storage/patrocinadores/bar_x.jpg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500" alt="Patrocinador">
-                <img src="{{ asset('storage/patrocinadores/smn.jpg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500" alt="Patrocinador">
-                <img src="{{ asset('storage/patrocinadores/ayuntamiento.png') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500" alt="Ayuntamiento">
-                <img src="{{ asset('storage/patrocinadores/color_pecks.jpeg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500" alt="Caja Rural">
+                <img src="{{ asset('storage/patrocinadores/bar_x.jpg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="Patrocinador">
+                <img src="{{ asset('storage/patrocinadores/smn.jpg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="Patrocinador">
+                <img src="{{ asset('storage/patrocinadores/ayuntamiento.png') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="Ayuntamiento">
+                <img src="{{ asset('storage/patrocinadores/color_pecks.jpeg') }}" class="h-12 md:h-16 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer" alt="Caja Rural">
             </div>
         </div>
     </section>
