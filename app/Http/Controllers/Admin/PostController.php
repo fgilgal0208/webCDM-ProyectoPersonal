@@ -6,22 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 
 class PostController extends Controller
 {
     /**
-     * 1. INDEX: Muestra la tabla con todas las noticias
+     * Muestra la lista de noticias en el panel admin.
      */
     public function index()
     {
-        // Traemos todas las noticias ordenadas de la más reciente a la más antigua
         $posts = Post::orderBy('fecha_publicacion', 'desc')->get();
-        
         return view('admin.posts.index', compact('posts'));
     }
 
     /**
-     * 2. CREATE: Muestra el formulario vacío para crear una nueva noticia
+     * Muestra el formulario para crear una nueva noticia.
      */
     public function create()
     {
@@ -29,44 +29,50 @@ class PostController extends Controller
     }
 
     /**
-     * 3. STORE: Recibe los datos del formulario 'create' y los guarda en la base de datos
+     * Guarda la nueva noticia y optimiza la imagen.
      */
     public function store(Request $request)
     {
-        // Validamos que no nos dejen campos importantes en blanco
         $request->validate([
             'titulo' => 'required|string|max:255',
-            'categoria' => 'required|string|max:50',
-            'extracto' => 'required|string',
+            'categoria' => 'required|string|max:100',
+            'extracto' => 'required|string|max:500',
             'cuerpo' => 'required|string',
             'fecha_publicacion' => 'required|date',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Máximo 2MB
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120', // Máx 5MB de subida inicial
         ]);
 
-        $data = $request->all();
+        $data = $request->except('imagen');
 
-        // Si el usuario ha subido una foto, la guardamos en la carpeta 'noticias'
         if ($request->hasFile('imagen')) {
-            $path = $request->file('imagen')->store('noticias', 'public');
-            $data['imagen_path'] = $path;
+            $imagen = $request->file('imagen');
+            
+            // 1. Nombre único para evitar que se sobrescriban
+            $nombreImagen = Str::slug($request->titulo) . '-' . time() . '.' . $imagen->getClientOriginalExtension();
+            
+            // 2. Comprobar si existe la carpeta
+            $carpeta = storage_path('app/public/noticias');
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0755, true);
+            }
+
+            // 3. Procesar y optimizar con Intervention Image
+            $rutaDestino = $carpeta . '/' . $nombreImagen;
+            $img = Image::read($imagen->getRealPath());
+            $img->cover(800, 600); // Recorta al centro dejándola de 800x600 px exactos
+            $img->save($rutaDestino, 80); // Guarda al 80% de calidad
+
+            // 4. Guardar la ruta en el array de base de datos
+            $data['imagen_path'] = 'noticias/' . $nombreImagen;
         }
 
-        // Creamos el post en la base de datos
         Post::create($data);
 
-        return redirect()->route('posts.index')->with('success', '¡Noticia publicada con éxito!');
+        return redirect()->route('posts.index')->with('success', 'Noticia creada y optimizada correctamente.');
     }
 
     /**
-     * 4. SHOW: Muestra una sola noticia (Opcional en el panel admin, pero buena práctica)
-     */
-    public function show(Post $post)
-    {
-        return view('admin.posts.show', compact('post'));
-    }
-
-    /**
-     * 5. EDIT: Muestra el formulario relleno con los datos de una noticia para modificarla
+     * Muestra el formulario para editar una noticia.
      */
     public function edit(Post $post)
     {
@@ -74,52 +80,61 @@ class PostController extends Controller
     }
 
     /**
-     * 6. UPDATE: Recibe los datos del formulario 'edit' y actualiza la base de datos
+     * Actualiza la noticia. Si hay foto nueva, optimiza y borra la vieja.
      */
     public function update(Request $request, Post $post)
     {
-        // Validamos los datos igual que al crear
         $request->validate([
             'titulo' => 'required|string|max:255',
-            'categoria' => 'required|string|max:50',
-            'extracto' => 'required|string',
+            'categoria' => 'required|string|max:100',
+            'extracto' => 'required|string|max:500',
             'cuerpo' => 'required|string',
             'fecha_publicacion' => 'required|date',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
-        $data = $request->all();
+        $data = $request->except('imagen');
 
-        // Si suben una NUEVA imagen, tenemos que borrar la vieja primero
         if ($request->hasFile('imagen')) {
-            // Borramos la imagen anterior si existía
-            if ($post->imagen_path) {
+            // A) Borrar la imagen anterior del disco duro para no gastar espacio
+            if ($post->imagen_path && Storage::disk('public')->exists($post->imagen_path)) {
                 Storage::disk('public')->delete($post->imagen_path);
             }
-            // Guardamos la nueva imagen
-            $path = $request->file('imagen')->store('noticias', 'public');
-            $data['imagen_path'] = $path;
+
+            // B) Procesar la nueva imagen
+            $imagen = $request->file('imagen');
+            $nombreImagen = Str::slug($request->titulo) . '-' . time() . '.' . $imagen->getClientOriginalExtension();
+            
+            $carpeta = storage_path('app/public/noticias');
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0755, true);
+            }
+
+            $rutaDestino = $carpeta . '/' . $nombreImagen;
+            $img = Image::read($imagen->getRealPath());
+            $img->cover(800, 600);
+            $img->save($rutaDestino, 80);
+
+            $data['imagen_path'] = 'noticias/' . $nombreImagen;
         }
 
-        // Actualizamos los datos en la base de datos
         $post->update($data);
 
         return redirect()->route('posts.index')->with('success', 'Noticia actualizada correctamente.');
     }
 
     /**
-     * 7. DESTROY: Elimina una noticia y su imagen del servidor
+     * Elimina la noticia y su foto asociada del disco.
      */
     public function destroy(Post $post)
     {
-        // Antes de borrar la noticia, borramos su foto del disco duro para no ocupar espacio
-        if ($post->imagen_path) {
+        // Borrar la imagen asociada si existe
+        if ($post->imagen_path && Storage::disk('public')->exists($post->imagen_path)) {
             Storage::disk('public')->delete($post->imagen_path);
         }
 
-        // Borramos el registro de la base de datos
         $post->delete();
 
-        return redirect()->route('posts.index')->with('success', '¡La noticia ha sido eliminada por completo!');
+        return redirect()->route('posts.index')->with('success', 'Noticia eliminada correctamente.');
     }
 }
