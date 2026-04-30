@@ -218,6 +218,10 @@
                     <span class="w-2 h-8 bg-clubRojo rounded-full"></span>
                     Últimas Noticias
                 </h2>
+                <a href="{{ route('noticias.index') }}" class="hidden md:flex items-center gap-2 bg-slate-100 hover:bg-clubRojo text-slate-600 hover:text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-colors shadow-sm">
+                    Ver todas &rsaquo;
+                </a>
+            </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">

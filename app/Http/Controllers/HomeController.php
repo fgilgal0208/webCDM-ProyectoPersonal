@@ -51,7 +51,14 @@ class HomeController extends Controller
             'proximoPartido'
         ));
     }
+    public function noticias()
+        {
+            $noticias = Post::orderBy('fecha_publicacion', 'desc')->paginate(9);
+            
+            return view('noticias.index', compact('noticias'));
+        }
 
+        
     public function show(Post $post)
     {
         return view('noticias.show', compact('post'));
