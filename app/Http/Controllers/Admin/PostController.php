@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -50,8 +49,8 @@ class PostController extends Controller
             // 1. Nombre único para evitar que se sobrescriban
             $nombreImagen = Str::slug($request->titulo) . '-' . time() . '.' . $imagen->getClientOriginalExtension();
             
-            // 2. Comprobar si existe la carpeta
-            $carpeta = storage_path('app/public/noticias');
+            // 2. Comprobar si existe la carpeta en la ruta PÚBLICA
+            $carpeta = public_path('storage/noticias'); 
             if (!file_exists($carpeta)) {
                 mkdir($carpeta, 0755, true);
             }
@@ -96,16 +95,20 @@ class PostController extends Controller
         $data = $request->except('imagen');
 
         if ($request->hasFile('imagen')) {
-            // A) Borrar la imagen anterior del disco duro para no gastar espacio
-            if ($post->imagen_path && Storage::disk('public')->exists($post->imagen_path)) {
-                Storage::disk('public')->delete($post->imagen_path);
+            // A) Borrar la imagen anterior de forma 100% segura en el hosting
+            if ($post->imagen_path) {
+                $rutaImagenAntigua = public_path('storage/' . $post->imagen_path);
+                if (file_exists($rutaImagenAntigua)) {
+                    unlink($rutaImagenAntigua); // unlink borra el archivo físicamente
+                }
             }
 
             // B) Procesar la nueva imagen
             $imagen = $request->file('imagen');
             $nombreImagen = Str::slug($request->titulo) . '-' . time() . '.' . $imagen->getClientOriginalExtension();
             
-            $carpeta = storage_path('app/public/noticias');
+            // 2. ¡MAGIA AQUÍ TAMBIÉN! Guardamos directo en el escaparate
+            $carpeta = public_path('storage/noticias');
             if (!file_exists($carpeta)) {
                 mkdir($carpeta, 0755, true);
             }
@@ -128,9 +131,12 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        // Borrar la imagen asociada si existe
-        if ($post->imagen_path && Storage::disk('public')->exists($post->imagen_path)) {
-            Storage::disk('public')->delete($post->imagen_path);
+        // Borrar la imagen asociada si existe físicamente en la carpeta pública
+        if ($post->imagen_path) {
+            $rutaImagen = public_path('storage/' . $post->imagen_path);
+            if (file_exists($rutaImagen)) {
+                unlink($rutaImagen);
+            }
         }
 
         $post->delete();

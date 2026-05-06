@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,3 +29,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 Route::get('/partidos', [\App\Http\Controllers\Admin\GameController::class, 'index'])->name('games.index');
 Route::put('/partidos/{game}', [\App\Http\Controllers\Admin\GameController::class, 'update'])->name('games.update');
 Route::get('/noticias', [\App\Http\Controllers\HomeController::class, 'noticias'])->name('noticias.index');
+
+Route::get('/limpiar', function() {
+    Illuminate\Support\Facades\Artisan::call('config:clear');
+    Illuminate\Support\Facades\Artisan::call('cache:clear');
+    return "Memoria limpia";
+});
