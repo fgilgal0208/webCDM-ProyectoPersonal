@@ -1,59 +1,67 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Web oficial del C. D. Murianense ⚽
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación web full-stack desarrollada en Laravel para el club de fútbol C. D. Murianense, **desplegada en producción** en un hosting real. Combina un escaparate público para la afición con un panel de administración a medida, para que la directiva gestione los contenidos del club de forma autónoma y sin conocimientos técnicos.
 
-## About Laravel
+## 🚀 Características principales
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Parte pública
+- **Portada del club:** clasificación de la liga ordenada por puntos, resultados de cada jornada con navegación entre jornadas y el próximo partido del club destacado.
+- **Noticias:** últimas noticias en la portada, listado paginado y página de detalle de cada noticia.
+- **Patrocinadores y redes sociales:** sección de patrocinadores y enlaces a los perfiles oficiales del club.
+- **Diseño responsive:** interfaz adaptada a móvil, tablet y escritorio con Tailwind CSS.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Panel de administración
+- **Acceso protegido:** login de administrador y rutas privadas mediante el middleware `auth` de Laravel.
+- **Gestión de noticias (CRUD):** crear, editar y eliminar noticias con título, categoría, extracto, cuerpo, fecha de publicación e imagen, con validación de formularios.
+- **Optimización automática de imágenes:** con Intervention Image, cada foto subida se recorta a 800×600 px y se comprime al 80 % de calidad. Los archivos reciben un nombre único y la imagen antigua se borra del servidor al actualizar o eliminar una noticia.
+- **Resultados por jornada:** registro de los goles de cada partido, jornada a jornada.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Stack tecnológico
 
-## Learning Laravel
+- **Backend:** PHP 8.2, Laravel 12
+- **Frontend:** Blade, Tailwind CSS 4, Vite
+- **Base de datos:** MySQL (equipos, jugadores, partidos, clasificación y noticias)
+- **Procesamiento de imágenes:** Intervention Image
+- **Despliegue:** hosting compartido en producción
+- **Control de versiones:** Git, GitHub
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## ⚙️ Instalación en local
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Necesitas tener instalados PHP 8.2+, Composer y Node.js.
 
-## Laravel Sponsors
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/fgilgal0208/webCDM-ProyectoPersonal.git
+   cd webCDM-ProyectoPersonal
+   ```
+2. Instalar las dependencias de PHP:
+   ```bash
+   composer install
+   ```
+3. Instalar y compilar las dependencias de frontend:
+   ```bash
+   npm install
+   npm run build
+   ```
+4. Configurar las variables de entorno y generar la clave de la aplicación:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+5. Definir la conexión a la base de datos en el archivo `.env`, crear las tablas con los datos de la liga (equipos, partidos y clasificación) y crear el usuario administrador:
+   ```bash
+   php artisan migrate --seed
+   php artisan db:seed --class=AdminSeeder
+   ```
+6. Levantar el servidor de desarrollo:
+   ```bash
+   php artisan serve
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+La web estará disponible en http://localhost:8000 y el panel de administración en http://localhost:8000/admin.
 
-### Premium Partners
+## 📄 Licencia y copyright
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+© 2026 Francisco Gilarte Galán. Todos los derechos reservados.
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Este repositorio y su contenido se proporcionan exclusivamente con fines de exhibición y evaluación profesional (portafolio). No se otorga permiso para utilizar, copiar, modificar o distribuir este código con fines comerciales o derivados sin autorización expresa del autor.
