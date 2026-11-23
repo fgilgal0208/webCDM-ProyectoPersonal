@@ -2,6 +2,8 @@
 
 Aplicación web full-stack desarrollada en Laravel para el club de fútbol C. D. Murianense, **desplegada en producción** en un hosting real. Combina un escaparate público para la afición con un panel de administración a medida, para que la directiva gestione los contenidos del club de forma autónoma y sin conocimientos técnicos.
 
+> ℹ️ **Nota:** proyecto realizado con fines de aprendizaje durante mis estudios de Desarrollo de Aplicaciones Web (DAW). Puede contener errores o aspectos mejorables; cualquier sugerencia es bienvenida.
+
 ## 🚀 Características principales
 
 ### Parte pública
